@@ -1,0 +1,174 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 62.5%;
+  font-family: red;
+
+  --red: hsl(14, 86%, 42%);
+  --green: hsl(159, 69%, 38%);
+  --rose_50: hsl(20, 50%, 98%);
+  --rose_100: hsl(13, 31%, 94%);
+  --rose_300: hsl(14, 25%, 72%);
+  --rose_400: hsl(7, 20%, 60%);
+  --rose_500: hsl(12, 20%, 44%);
+  --rose_900: hsl(14, 65%, 9%);
+}
+
+body {
+  background-color: var(--rose_50);
+  font-size: 1.6rem;
+  color: var(--rose_900);
+}
+
+#major_container {
+  display: flex;
+  gap: 48px;
+  
+  width: 1200px;
+  margin: 20px auto;
+  padding: 20px 40px;
+  
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px var(--rose_500);
+  background-color: var(--rose_50);
+}
+
+#title{
+  margin-bottom: 20px
+}
+
+#desserts_container {
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 200px);
+  gap: 20px;
+  justify-content: center;
+}
+
+.dessert {
+  display: flex;
+  flex-direction: column;
+}
+
+.dessert_img {
+  height: 200px;
+  width: 200px;
+  border-radius: 10px;
+  
+}
+
+.dessert:has(.btn_wrapper:hover) .dessert_img{
+  border: 1px solid var(--red);
+}
+
+
+
+.btn_wrapper{
+  position:relative;
+  display:flex;
+  align-items: center;
+
+  background-color: var(--rose_50);
+  border: 1px solid var(--rose_300);
+  border-radius: 20px;
+  width: fit-content;
+
+  padding: 8px 16px;
+  margin: auto;
+  margin-top: -20px;
+}
+.dessert_btn{
+  cursor: pointer;
+  opacity: 0;
+  position:absolute;
+  inset:0;
+  
+}
+
+.btn_wrapper:hover{
+  background-color: var(--red);
+  color: var(--rose_50);
+  border-color: var(--rose_50);
+  cursor: pointer;
+  
+}
+
+.btn_wrapper:hover svg path{
+  fill: var(--rose_50);
+}
+
+.clicked {
+  gap: 10px;
+  background-color: var(--red);
+  color: var(--rose_50);
+}
+
+
+
+.decrement_qty{
+  height: fit-content;
+}
+
+.increment_qty,.decrement_qty{
+  all: unset;
+  border-radius: 50%;
+  border: 1px solid var(--rose_50);
+  padding: 0px 3px;
+}
+
+.increment_qty:hover,.decrement_qty:hover{
+  background-color: var(--rose_50);
+  cursor: pointer;
+
+}
+.increment_qty:hover path,.decrement_qty:hover path {
+  border-color: var(--rose_300);
+  stroke:var(--red)
+}
+
+.category {
+  font-size: 1.2rem;
+  color: var(--rose_400);
+}
+
+.dessert_name {
+  font-weight: 600;
+}
+
+.dessert_price {
+  color: var(--red);
+}
+
+#cart{
+  width: 300px;
+
+  grid-row: 1 ;
+  background-color: white;
+}
+
+#cart_title{
+  margin-bottom:20px;
+
+  background-color:white;
+  color: var(--red);
+}
+
+#cart_list{
+  grid-row: 2;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.price_wrapper{
+  display: flex;
+    gap: 8px;
+}

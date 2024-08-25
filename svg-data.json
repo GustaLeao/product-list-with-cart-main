@@ -1,0 +1,9 @@
+{
+    "addToCart": "./assets/images/icon-add-to-cart.svg",
+    "carbonNeutral": "./assets/images/icon-carbon-neutral.svg",
+    "decrementQty": "./assets/images/icon-decrement-quantity.svg",
+    "incrementQty": "./assets/images/icon-order-confirmed.svg",
+    "removeItem": "./assets/images/icon-remove-item.svg",
+    "emptyCart": "./assets/images/illustration-empty-cart.svg"
+}
+

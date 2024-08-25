@@ -111,23 +111,23 @@ body {
 
 
 
-.decrement_qty{
+.minus_button{
   height: fit-content;
 }
 
-.increment_qty,.decrement_qty{
+.plus_button,.minus_button{
   all: unset;
   border-radius: 50%;
   border: 1px solid var(--rose_50);
   padding: 0px 3px;
 }
 
-.increment_qty:hover,.decrement_qty:hover{
+.plus_button:hover,.minus_button:hover{
   background-color: var(--rose_50);
   cursor: pointer;
 
 }
-.increment_qty:hover path,.decrement_qty:hover path {
+.plus_button:hover path,.minus_button:hover path {
   border-color: var(--rose_300);
   stroke:var(--red)
 }

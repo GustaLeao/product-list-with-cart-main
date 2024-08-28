@@ -109,7 +109,11 @@ body {
   color: var(--rose_50);
 }
 
-
+.disabled{
+  inset:unset;
+  all:unset;
+  position: absolute;
+}
 
 .minus_button{
   height: fit-content;
@@ -164,11 +168,17 @@ body {
 
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  gap: 8px;
+}
+
+
+#cart_list.centralized{
+  align-items: center;
 }
 
 .price_wrapper{
   display: flex;
     gap: 8px;
 }
+

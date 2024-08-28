@@ -1,8 +1,10 @@
+//variáveis contendo elementos DOM
 const container = document.getElementById("desserts_container");
-const btns = document.getElementsByClassName("dessert_btn");
 const wrappersArray = document.getElementsByClassName("btn_wrapper");
 const cartQty = document.getElementById("cart_title");
 const cartList = document.getElementById("cart_list");
+const confirmation = document.getElementById("confirmation");
+//svgs abaixo
 const icons = {
   addToCart: `<svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" fill="none" viewBox="0 0 21 20"><g fill="#C73B0F" clip-path="url(#a)"><path d="M6.583 18.75a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5ZM15.334 18.75a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5ZM3.446 1.752a.625.625 0 0 0-.613-.502h-2.5V2.5h1.988l2.4 11.998a.625.625 0 0 0 .612.502h11.25v-1.25H5.847l-.5-2.5h11.238a.625.625 0 0 0 .61-.49l1.417-6.385h-1.28L16.083 10H5.096l-1.65-8.248Z"/><path d="M11.584 3.75v-2.5h-1.25v2.5h-2.5V5h2.5v2.5h1.25V5h2.5V3.75h-2.5Z"/></g><defs><clipPath id="a"><path fill="#fff" d="M.333 0h20v20h-20z"/></clipPath></defs></svg>`,
   carbonNeutral: `<svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" fill="none" viewBox="0 0 21 20"><path fill="#1EA575" d="M8 18.75H6.125V17.5H8V9.729L5.803 8.41l.644-1.072 2.196 1.318a1.256 1.256 0 0 1 .607 1.072V17.5A1.25 1.25 0 0 1 8 18.75Z"/><path fill="#1EA575" d="M14.25 18.75h-1.875a1.25 1.25 0 0 1-1.25-1.25v-6.875h3.75a2.498 2.498 0 0 0 2.488-2.747 2.594 2.594 0 0 0-2.622-2.253h-.99l-.11-.487C13.283 3.56 11.769 2.5 9.875 2.5a3.762 3.762 0 0 0-3.4 2.179l-.194.417-.54-.072A1.876 1.876 0 0 0 5.5 5a2.5 2.5 0 1 0 0 5v1.25a3.75 3.75 0 0 1 0-7.5h.05a5.019 5.019 0 0 1 4.325-2.5c2.3 0 4.182 1.236 4.845 3.125h.02a3.852 3.852 0 0 1 3.868 3.384 3.75 3.75 0 0 1-3.733 4.116h-2.5V17.5h1.875v1.25Z"/></svg>`,
@@ -27,15 +29,11 @@ const icons = {
 <path stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width=".974" d="M9.796 52.06c-.667 5.866 16.24 12.586 37.733 15.04 14.774 1.68 27.867.906 34.854-1.654"/>
 </svg>`,
 };
-let dataList = [];
-let dessertInCart = [];
-let totalInCart = 0;
+let dessertsInCart = [];
 let btnArr = [];
-for (let btn of btns) {
-  btnArr.push(btn);
-}
 
-const getDataTo = async (f, i) => {
+// Pesquisa os dado das sobremesas dentro do data.json
+const getDataTo = async (f, id) => {
   try {
     const res = await fetch("data.json");
     const resTwo = await fetch("svg-data.json");
@@ -46,31 +44,32 @@ const getDataTo = async (f, i) => {
 
     const data = await res.json();
 
-    if (f === populateContainer) {
-      f(data);
-    }
     if (f === modifyCartList) {
-      f(data, i);
+      f("add", data, id);
     }
+
+    f(data);
   } catch (error) {
     console.error("error fetching data:", error);
   }
 };
 
+// Cria os elementos html contendo as sobremesas
 const populateContainer = (dataArr) => {
   if (dataArr.length <= 0) {
     console.error("there was no data in Array");
     return;
   }
 
+  container.innerHTML = ''
+
   for (let data of dataArr) {
-    dataList.push(data);
     const { image, name, category, price } = data;
     container.innerHTML += `
             <div class='dessert'> 
                 <img class='dessert_img' src='${image.desktop}'/>
                 <div class='btn_wrapper'>
-                  <button class='dessert_btn' onclick=verifyCart(event)>  </button>
+                  <button class='dessert_btn' onclick=verifyBtn(event) value="${name}">  </button>
                   ${icons.addToCart} 
                   <p>Add to Cart</p> 
                 </div>
@@ -82,75 +81,207 @@ const populateContainer = (dataArr) => {
   }
 };
 
-const verifyCart = (e) => {
+// Acha o botão apertado pelo index e identifica a qual sobremesa pertence
+const verifyBtn = (e) => {
+  const btns = document.getElementsByClassName("dessert_btn");
+  btnArr = Array.from(btns);
+
   let i = btnArr.findIndex((btn) => btn == e.target);
 
-  for (let dessert of dessertInCart) {
-    if (dessert.dIndex == i) {
-      return incrementQty(i);
-    }
-  }
+  let indentifier = btnArr[i].getAttribute("value");
+  console.log(indentifier);
 
-  getDataTo(modifyCartList, i);
-  //executar função de incluir sobremesa no carrinho
+  getDataTo(modifyCartList, indentifier);
 };
 
-const incrementQty = (i) => {};
+// Remove a sobremesa da array do carrinho
+const removeDessert = (i, name) => {
+  dessertsInCart = dessertsInCart.filter((dessert) => dessert.i !== i);
 
-const modifyCartList = (dataArr, i) => {
-  if (!dataArr) {
-    console.log("data not founded");
-    return;
-  }
-
-  if (i < 0) {
-    console.log("index not referenced");
-    return;
-  }
-
-  let { name, price } = dataArr[i];
-
-  dessertInCart.push({
-    dIndex: i,
-    price,
-    name,
-    qty: 1,
-  });
-
-  let { dIndex, qty } = dessertInCart.find((dessert) => dessert.name === name);
-
-  wrappersArray[i].classList.add("clicked");
+  wrappersArray[i].classList.remove("clicked");
   wrappersArray[i].innerHTML = `
-    <button class="minus_button"> ${icons.minus} </button>
-    <p id="qty_${dIndex}"> ${qty} </p> 
-    <button class="plus_button"> ${icons.plus} </button> 
-  `;
+      <button class='dessert_btn' onclick=verifyBtn(event) value="${name}"></button>
+      ${icons.addToCart} 
+      <p>Add to Cart</p> `;
+  modifyCartList("remove", "dessert", i);
+
+  showTotal();
+};
+
+// Diminui a quantidade de uma determinada sobremessa através de um botão apertado
+const decrementQty = (i) => {
+  let dessert = dessertsInCart.find((el) => el.i == i);
+
+  dessert.qty--;
+
+  if (dessert.qty == 0) {
+    removeDessert(i, dessert.name);
+    return;
+  }
+  showTotal();
+
+  // busca os elementos relacionados a sobremesa para atualização da saída de dados
+  let btnQty = document.getElementById(`qty_${i}`);
+  let cartQty = document.getElementById(`order_qty_${i}`);
+  let totalPrice = document.getElementById(`total_price_${i}`);
+
+  let { qty, price } = dessert;
+
+  btnQty.innerHTML = `${qty}`;
+  cartQty.innerHTML = `${qty}`;
+  totalPrice.innerHTML = `$${(qty * price).toFixed(2)}`;
+};
+
+// Aumenta a quantidade de uma determinada sobremessa através de um botão apertado
+const incrementQty = (i) => {
+  let dessert = dessertsInCart.find((el) => el.i == i);
+  let btnQty = document.getElementById(`qty_${i}`);
+  let orderQty = document.getElementById(`order_qty_${i}`);
+  let totalPrice = document.getElementById(`total_price_${i}`);
+
+  dessert.qty++;
+  btnQty.innerHTML = `${dessert.qty}`;
+  orderQty.innerHTML = `${dessert.qty}`;
+  totalPrice.innerHTML = `$${(dessert.qty * dessert.price).toFixed(2)}`;
+
+  showTotal();
+};
+
+//Atualiza a lista do carrinho
+const modifyCartList = (addRemove, dataArr, id) => {
+  if ((!dataArr && addRemove === "add") || (!id && addRemove === "add")) {
+    console.log("index/data not referenced");
+    return;
+  }
+
+  // Adiciona uma sobremesa ao carrinho através do identificador: o nome
+  if (addRemove === "add") {
+    let { name, price, image } = dataArr.find((el) => el.name === id);
+    let i = dataArr.findIndex((el) => el.name === id);
+
+    console.log(name, price);
+
+    dessertsInCart.push({
+      i,
+      price,
+      name,
+      qty: 1,
+      dialogImg: image.thumbnail,
+    });
+
+    //atualiza o elemento que continha o botão de "Add Cart" para incrementar ou dimnuir a quantidade do produto comprado
+    wrappersArray[i].classList.add("clicked");
+    wrappersArray[i].innerHTML = `
+    <button class="minus_button" onclick='decrementQty(${i})'> ${icons.minus} </button>
+    <p id="qty_${i}"> 1 </p> 
+    <button class="plus_button" onclick='incrementQty(${i})'> ${icons.plus} </button> 
+    `;
+  }
+
+  //Se não tiver mais nenhuma sobremesa no carrinho, exibe um ícone e uma frase
+  if (dessertsInCart.length <= 0) {
+    cartList.innerHTML = `
+        <div class="empty_cart">${icons.emptyCart}</div>
+        <div class="empty_warning">Your added items will appear here</div>
+        `;
+    cartList.classList.add("centralized");
+    return;
+  }
 
   cartList.innerHTML = "";
-  for (let dessert of dessertInCart) {
-    let { dIndex, name, qty, price } = dessert;
+  cartList.classList.remove("centralized");
+
+  //Adiciona cada uma sobremesa que estiver na lista ao carrinho
+  for (let dessert of dessertsInCart) {
+    let { i, name, qty, price } = dessert;
     let totalPrice = Number(qty * price).toFixed(2);
     cartList.innerHTML += `
-      <section class='order ${dIndex}'>
-        <span class='order_name'>${name}</span>
-        <div class='price_wrapper'>
-          <p class='order_qty'> ${qty}x</p>
-          <p class='unity_price'> @${price} </p>
-          <p class='total_order_price'> $${totalPrice}
+      <section class='order'>
+        <div class='order_text'>  
+          <span class='order_name'>${name}</span>
+          <div class='price_wrapper'>
+            <p class='order_qty'>
+             <p id="order_qty_${i}" > ${qty} </p>
+            x
+            </p>
+            <p class='unity_price'> <small>@</small> $${price.toFixed(2)} </p>
+            <p id="total_price_${i}" class='total_order_price'> $${totalPrice} </p>
+          </div>
         </div>
+        <button class="remove_btn" onclick="removeDessert(${i}, '${name}')"> ${
+      icons.removeItem
+    }   </button>
       </section>
     `;
   }
+
+  cartList.innerHTML += `
+    <div id="card">
+      ${icons.carbonNeutral}
+      <p> This is a <strong>carbon-neutral</strong> delivery </p>
+    </div>
+
+    <button id="confirmation_btn" class="red_btn" onclick="showConfirmation()"> Confirm Order </button>
+  `;
+
+  showTotal();
+};
+
+const showTotal = () => {
+  cartQty.innerHTML = `Your Cart`;
+  let total = dessertsInCart.reduce((acc, { qty }) => acc + qty, 0);
+  if (total > 0) {
+    cartQty.innerHTML = `Your Cart (${total})`;
+  }
+};
+
+//abre um dialog para exibir a confrimação da compra
+const showConfirmation = () => {
+  confirmation.innerHTML = `
+    ${icons.orderConfirmed}
+    <h2 id="confirmation_title"> Order Confirmed </h2>
+    <p id="confirmation_subtitle"> We hope you enjoy your food! </p>
+  `;
+  for (let dessert of dessertsInCart) {
+    let { name, qty, price, dialogImg } = dessert;
+    confirmation.innerHTML += `
+      <section class="order_confirmed">
+        <img class="thumbnail" src="${dialogImg}"/>
+        <span class="order_name"> ${name} </span>
+        <div class="price_wrapper">
+          <p class="order_qty"> ${qty}x </p>
+          <p class="unity_price"> @ $${price.toFixed(2)} </p>
+          <p class="total_order_price"> $${(price * qty).toFixed(2)}</p>
+      </section>
+    `;
+  }
+  confirmation.innerHTML += `
+  <button id="new_order" class="red_btn" onclick="reset()"> Start a new order </button>
+  `;
+  confirmation.showModal();
+};
+
+// Limpa todos os espaços de exibição, exceto a sessão de compra das sobremesas
+const reset = () => {
+  confirmation.close();
+  dessertsInCart = [];
+  cartList.innerHTML = "";
+  confirmation.innerHTML = "";
+  cartQty.innerHTML = `Your Cart`
+  getDataTo(populateContainer);
 };
 
 window.onload = () => {
+  const btns = document.getElementsByClassName("dessert_btn");
+
+  btnArr = Array.from(btns);
+
   if (cartList.innerHTML == "") {
     cartList.innerHTML = `
         <div class="empty_cart">${icons.emptyCart}</div>
         <div class="empty_warning">Your added items will appear here</div>
         `;
   }
-  btnArr = Array.from(btns);
+  cartList.classList.add("centralized");
+  getDataTo(populateContainer);
 };
-
-getDataTo(populateContainer);

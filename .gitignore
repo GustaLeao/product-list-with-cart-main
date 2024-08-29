@@ -14,7 +14,11 @@
 # Avoid your project being littered with annoying .DS_Store files!
 .DS_Store
 .prettierignore
-/design
+/design/active-states.jpg
+/design/desktop-design-order-confirmation.jpg
+/design/desktop-design-selected.jpg
+/design/mobile-design-order-confirmation.jpg
+/design/mobile-design-selected.jpg
 README-template.md
 style-guide.md
 /assets/fonts

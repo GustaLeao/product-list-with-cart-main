@@ -3,7 +3,7 @@ const container = document.getElementById("desserts_container");
 const wrappersArray = document.getElementsByClassName("btn_wrapper");
 const cartQty = document.getElementById("cart_title");
 const cartList = document.getElementById("cart_list");
-const confirmation = document.getElementById("confirmation");
+const confirmationDialog = document.getElementById("confirmation");
 //svgs abaixo
 const icons = {
   addToCart: `<svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" fill="none" viewBox="0 0 21 20"><g fill="#C73B0F" clip-path="url(#a)"><path d="M6.583 18.75a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5ZM15.334 18.75a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5ZM3.446 1.752a.625.625 0 0 0-.613-.502h-2.5V2.5h1.988l2.4 11.998a.625.625 0 0 0 .612.502h11.25v-1.25H5.847l-.5-2.5h11.238a.625.625 0 0 0 .61-.49l1.417-6.385h-1.28L16.083 10H5.096l-1.65-8.248Z"/><path d="M11.584 3.75v-2.5h-1.25v2.5h-2.5V5h2.5v2.5h1.25V5h2.5V3.75h-2.5Z"/></g><defs><clipPath id="a"><path fill="#fff" d="M.333 0h20v20h-20z"/></clipPath></defs></svg>`,
@@ -61,7 +61,7 @@ const populateContainer = (dataArr) => {
     return;
   }
 
-  container.innerHTML = ''
+  container.innerHTML = "";
 
   for (let data of dataArr) {
     const { image, name, category, price } = data;
@@ -128,7 +128,7 @@ const decrementQty = (i) => {
   let { qty, price } = dessert;
 
   btnQty.innerHTML = `${qty}`;
-  cartQty.innerHTML = `${qty}`;
+  cartQty.innerHTML = `${qty}x`;
   totalPrice.innerHTML = `$${(qty * price).toFixed(2)}`;
 };
 
@@ -140,9 +140,11 @@ const incrementQty = (i) => {
   let totalPrice = document.getElementById(`total_price_${i}`);
 
   dessert.qty++;
-  btnQty.innerHTML = `${dessert.qty}`;
-  orderQty.innerHTML = `${dessert.qty}`;
-  totalPrice.innerHTML = `$${(dessert.qty * dessert.price).toFixed(2)}`;
+
+  let { qty, price } = dessert;
+  btnQty.innerHTML = `${qty}`;
+  orderQty.innerHTML = `${qty}x`;
+  totalPrice.innerHTML = `$${(qty * price).toFixed(2)}`;
 
   showTotal();
 };
@@ -191,21 +193,24 @@ const modifyCartList = (addRemove, dataArr, id) => {
   cartList.innerHTML = "";
   cartList.classList.remove("centralized");
 
+  let cartTotalPrice = 0;
   //Adiciona cada uma sobremesa que estiver na lista ao carrinho
   for (let dessert of dessertsInCart) {
     let { i, name, qty, price } = dessert;
-    let totalPrice = Number(qty * price).toFixed(2);
+    let totalPrice = qty * price;
+    cartTotalPrice += totalPrice;
     cartList.innerHTML += `
-      <section class='order'>
+      <section class='order border-top'>
         <div class='order_text'>  
           <span class='order_name'>${name}</span>
           <div class='price_wrapper'>
-            <p class='order_qty'>
-             <p id="order_qty_${i}" > ${qty} </p>
-            x
-            </p>
-            <p class='unity_price'> <small>@</small> $${price.toFixed(2)} </p>
-            <p id="total_price_${i}" class='total_order_price'> $${totalPrice} </p>
+              <p id="order_qty_${i}" class='order_qty'> ${qty}x </p>  
+              <p class='unity_price'> <small> @ </small> $${price.toFixed(
+                2
+              )} </p>
+              <p id="total_price_${i}" class='total_order_price'> $${totalPrice.toFixed(
+      2
+    )} </p>
           </div>
         </div>
         <button class="remove_btn" onclick="removeDessert(${i}, '${name}')"> ${
@@ -216,6 +221,11 @@ const modifyCartList = (addRemove, dataArr, id) => {
   }
 
   cartList.innerHTML += `
+    <div id="total_of_cart" class="border-top">
+      <p> Order Total</p> 
+      <p id='total_cart_price'>${cartTotalPrice.toFixed(2)}</p>
+    </div>
+
     <div id="card">
       ${icons.carbonNeutral}
       <p> This is a <strong>carbon-neutral</strong> delivery </p>
@@ -229,45 +239,67 @@ const modifyCartList = (addRemove, dataArr, id) => {
 
 const showTotal = () => {
   cartQty.innerHTML = `Your Cart`;
-  let total = dessertsInCart.reduce((acc, { qty }) => acc + qty, 0);
-  if (total > 0) {
-    cartQty.innerHTML = `Your Cart (${total})`;
+  let totalQty = dessertsInCart.reduce((acc, { qty }) => acc + qty, 0);
+  let cartTotalEl = document.getElementById("total_cart_price");
+  let totalPrice = dessertsInCart.reduce(
+    (acc, { qty, price }) => acc + qty * price,
+    0
+  );
+  if (totalQty > 0) {
+    cartQty.innerHTML = `Your Cart (${totalQty})`;
+    cartTotalEl.innerHTML = `$${totalPrice.toFixed(2)}`;
   }
 };
 
 //abre um dialog para exibir a confrimação da compra
 const showConfirmation = () => {
-  confirmation.innerHTML = `
+  confirmationDialog.innerHTML = `
     ${icons.orderConfirmed}
     <h2 id="confirmation_title"> Order Confirmed </h2>
     <p id="confirmation_subtitle"> We hope you enjoy your food! </p>
+    <div id="confirmation_container"></div>
   `;
+
+  let container = document.getElementById("confirmation_container");
+  let cartTotalEl = document.getElementById("total_cart_price");
+  let cartTotalPrice = cartTotalEl.innerHTML;
+
   for (let dessert of dessertsInCart) {
     let { name, qty, price, dialogImg } = dessert;
-    confirmation.innerHTML += `
+    container.innerHTML += `
       <section class="order_confirmed">
+      <div class="dessert_content_wrapper">
         <img class="thumbnail" src="${dialogImg}"/>
-        <span class="order_name"> ${name} </span>
-        <div class="price_wrapper">
-          <p class="order_qty"> ${qty}x </p>
-          <p class="unity_price"> @ $${price.toFixed(2)} </p>
-          <p class="total_order_price"> $${(price * qty).toFixed(2)}</p>
+          <div class="order_text_wrapper">
+            <span class="order_name"> ${name} </span>
+            <div class="price_wrapper">
+              <p class="order_qty"> ${qty}x </p>
+              <p class="unity_price"> @ $${price.toFixed(2)} </p>
+            </div>
+          </div>
+        </div>
+            <p class="total_order_price"> $${(price * qty).toFixed(2)}</p>
       </section>
     `;
   }
-  confirmation.innerHTML += `
+  confirmationDialog.innerHTML += `
+  <div id="total_of_cart" class="border-top">
+      <p> Order Total</p> 
+      <p id='total_cart_price'>${cartTotalPrice}</p>
+    </div>
+
   <button id="new_order" class="red_btn" onclick="reset()"> Start a new order </button>
   `;
-  confirmation.showModal();
+  confirmationDialog.showModal();
 };
 
 // Limpa todos os espaços de exibição, exceto a sessão de compra das sobremesas
 const reset = () => {
-  confirmation.close();
+  confirmationDialog.close();
   dessertsInCart = [];
   cartList.innerHTML = "";
-  confirmation.innerHTML = "";
-  cartQty.innerHTML = `Your Cart`
+  confirmationDialog.innerHTML = "";
+  cartQty.innerHTML = `Your Cart`;
   getDataTo(populateContainer);
 };
 

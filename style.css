@@ -4,11 +4,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Red Hat Text', sans-serif;
 }
 
 :root {
   font-size: 62.5%;
-  font-family: red;
 
   --red: hsl(14, 86%, 42%);
   --green: hsl(159, 69%, 38%);
@@ -40,7 +40,8 @@ body {
 }
 
 #title{
-  margin-bottom: 20px
+  font-size: 36px;
+  margin-bottom: 24px
 }
 
 #desserts_container {
@@ -151,7 +152,7 @@ body {
 
 #cart{
   width: 300px;
-
+  padding: 20px 10px;
   grid-row: 1 ;
   background-color: white;
 }
@@ -169,16 +170,153 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 8px;
+  gap: 16px;
 }
-
 
 #cart_list.centralized{
   align-items: center;
 }
 
+.order,#total_of_cart{
+  padding: 16px 4px 0px;
+}
+
+.order{
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.border-top{
+  border-top: 1px solid var(--rose_100);
+}
+
 .price_wrapper{
   display: flex;
-    gap: 8px;
+  gap: 10px;
+}
+
+.order_name{
+  font-weight: 700;
+  color: var(--rose_900);
+  display: block;
+  margin-bottom: 8px;
+  
+}
+
+.order_qty{
+  font-weight: 500;
+  color: var(--red);
+}
+
+.unity_price{
+  color: var(--rose_500);
+}
+
+.total_order_price{
+  color: var(--rose_900);
+}
+
+.remove_btn{
+  fill: var(--rose_500);
+  border-radius: 50%;
+  padding: 0px 4px;
+  height: fit-content;
+  background: none;
+  border: 1px solid var(--rose_500);
+  cursor: pointer;
+}
+
+.remove_btn:hover{
+  border-width: 2px;
+  
+}
+
+.remove_btn:hover svg{
+  stroke: var(--rose_500);
+
+}
+
+.red_btn{
+  border: none;
+  background-color: var(--red);
+  padding: 8px;
+  color: var(--rose_50);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#total_of_cart{
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+#total_cart_price{
+  font-weight: 700;
+ font-size: 24px; 
+}
+
+#card{
+  display: flex;
+  justify-content: center;
+  background-color: var(--rose_50);
+  padding: 8px;
+  font-size: 14px;
+  gap: 4px;
+}
+
+#confirmation{
+  width: 60vw;
+  margin: auto;
+  padding: 48px;
+}
+
+#confirmation svg,
+#confirmation_subtitle,
+#confirmation_container,
+#total_of_cart{
+  margin-bottom: 24px;
+}
+
+#confirmation_title{
+  font-size: 36px;
+}
+
+#confirmation_subtitle{
+  color: var(--rose_500);
+}
+
+#confirmation_container{
+  background-color: var(--rose_50);
+}
+
+.order_confirmed{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dessert_content_wrapper{
+  display: flex;
+}
+
+.order_confirmed .order_text_wrapper{
+  display: flex;
+  flex-direction: column;
+}
+
+.thumbnail{
+  margin-right: 8px;
+}
+
+.order_confirmed .total_order_price{
+  font-weight: 700;
+  color: var(--rose_900);
+}
+
+#new_order{
+  margin: auto;
+  width: -webkit-fill-available;
 }
 

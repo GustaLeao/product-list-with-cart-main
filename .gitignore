@@ -15,7 +15,7 @@
 .DS_Store
 .prettierignore
 /design
-preview.jpg
 README-template.md
 style-guide.md
-/fonts
+/assets/fonts
+preview.jpg

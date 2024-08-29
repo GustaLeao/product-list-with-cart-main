@@ -36,10 +36,9 @@ let btnArr = [];
 const getDataTo = async (f, id) => {
   try {
     const res = await fetch("data.json");
-    const resTwo = await fetch("svg-data.json");
 
-    if (!res.ok || !resTwo.ok) {
-      throw new Error(`HTTP error! status: ${res.status} ${resTwo.status}`);
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
     }
 
     const data = await res.json();

@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Red Hat Text', sans-serif;
+  font-family: "Red Hat Text", sans-serif;
 }
 
 :root {
@@ -26,22 +26,27 @@ body {
   color: var(--rose_900);
 }
 
+body.stop_scroll{
+  overflow: hidden;
+}
+
 #major_container {
   display: flex;
+  justify-content: space-around;
   gap: 48px;
-  
-  width: 1200px;
+
+  width: 80vw;
   margin: 20px auto;
   padding: 20px 40px;
-  
+
   border-radius: 10px;
   box-shadow: 0px 0px 20px var(--rose_500);
   background-color: var(--rose_50);
 }
 
-#title{
+#title {
   font-size: 36px;
-  margin-bottom: 24px
+  margin-bottom: 24px;
 }
 
 #desserts_container {
@@ -59,20 +64,16 @@ body {
 
 .dessert_img {
   height: 200px;
-  width: 200px;
   border-radius: 10px;
-  
 }
 
-.dessert:has(.btn_wrapper:hover) .dessert_img{
+.dessert:has(.btn_wrapper:hover) .dessert_img {
   border: 1px solid var(--red);
 }
 
-
-
-.btn_wrapper{
-  position:relative;
-  display:flex;
+.btn_wrapper {
+  position: relative;
+  display: flex;
   align-items: center;
 
   background-color: var(--rose_50);
@@ -81,26 +82,24 @@ body {
   width: fit-content;
 
   padding: 8px 16px;
-  margin: auto;
+  margin: auto auto 5px;
   margin-top: -20px;
 }
-.dessert_btn{
+.dessert_btn {
   cursor: pointer;
   opacity: 0;
-  position:absolute;
-  inset:0;
-  
+  position: absolute;
+  inset: 0;
 }
 
-.btn_wrapper:hover{
+.btn_wrapper:hover {
   background-color: var(--red);
   color: var(--rose_50);
   border-color: var(--rose_50);
   cursor: pointer;
-  
 }
 
-.btn_wrapper:hover svg path{
+.btn_wrapper:hover svg path {
   fill: var(--rose_50);
 }
 
@@ -110,31 +109,33 @@ body {
   color: var(--rose_50);
 }
 
-.disabled{
-  inset:unset;
-  all:unset;
+.disabled {
+  inset: unset;
+  all: unset;
   position: absolute;
 }
 
-.minus_button{
+.minus_button {
   height: fit-content;
 }
 
-.plus_button,.minus_button{
+.plus_button,
+.minus_button {
   all: unset;
   border-radius: 50%;
   border: 1px solid var(--rose_50);
   padding: 0px 3px;
 }
 
-.plus_button:hover,.minus_button:hover{
+.plus_button:hover,
+.minus_button:hover {
   background-color: var(--rose_50);
   cursor: pointer;
-
 }
-.plus_button:hover path,.minus_button:hover path {
+.plus_button:hover path,
+.minus_button:hover path {
   border-color: var(--rose_300);
-  stroke:var(--red)
+  stroke: var(--red);
 }
 
 .category {
@@ -150,21 +151,21 @@ body {
   color: var(--red);
 }
 
-#cart{
-  width: 300px;
-  padding: 20px 10px;
-  grid-row: 1 ;
+#cart {
+  width: 24vw;
+  padding: 10px;
+  grid-row: 1;
   background-color: white;
 }
 
-#cart_title{
-  margin-bottom:20px;
+#cart_title {
+  margin-bottom: 20px;
 
-  background-color:white;
+  background-color: white;
   color: var(--red);
 }
 
-#cart_list{
+#cart_list {
   grid-row: 2;
 
   display: flex;
@@ -173,51 +174,53 @@ body {
   gap: 16px;
 }
 
-#cart_list.centralized{
+#cart_list.centralized {
   align-items: center;
+  text-align: center;
 }
 
-.order,#total_of_cart{
+.order,
+#total_of_cart {
   padding: 16px 4px 0px;
 }
 
-.order{
+.order {
   display: flex;
   justify-content: space-between;
   font-size: 14px;
 }
 
-.border-top{
+.border-top {
   border-top: 1px solid var(--rose_100);
 }
 
-.price_wrapper{
+.price_wrapper {
   display: flex;
   gap: 10px;
 }
 
-.order_name{
+.order_name {
   font-weight: 700;
   color: var(--rose_900);
   display: block;
   margin-bottom: 8px;
-  
 }
 
-.order_qty{
+.order_qty {
   font-weight: 500;
   color: var(--red);
 }
 
-.unity_price{
+.unity_price {
   color: var(--rose_500);
 }
 
-.total_order_price{
+.total_order_price {
+  font-weight: 500;
   color: var(--rose_900);
 }
 
-.remove_btn{
+.remove_btn {
   fill: var(--rose_500);
   border-radius: 50%;
   padding: 0px 4px;
@@ -227,17 +230,15 @@ body {
   cursor: pointer;
 }
 
-.remove_btn:hover{
+.remove_btn:hover {
   border-width: 2px;
-  
 }
 
-.remove_btn:hover svg{
+.remove_btn:hover svg {
   stroke: var(--rose_500);
-
 }
 
-.red_btn{
+.red_btn {
   border: none;
   background-color: var(--red);
   padding: 8px;
@@ -246,18 +247,18 @@ body {
   cursor: pointer;
 }
 
-#total_of_cart{
-display: flex;
-justify-content: space-between;
-align-items: center;
+#total_of_cart {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-#total_cart_price{
+#total_cart_price {
   font-weight: 700;
- font-size: 24px; 
+  font-size: 24px;
 }
 
-#card{
+#card {
   display: flex;
   justify-content: center;
   background-color: var(--rose_50);
@@ -266,8 +267,14 @@ align-items: center;
   gap: 4px;
 }
 
-#confirmation{
-  width: 60vw;
+#confirmation {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  overflow-y: auto;
+  max-height: calc(100vh - 50px);
+
   margin: auto;
   padding: 48px;
 }
@@ -275,48 +282,103 @@ align-items: center;
 #confirmation svg,
 #confirmation_subtitle,
 #confirmation_container,
-#total_of_cart{
+#total_of_cart {
   margin-bottom: 24px;
 }
 
-#confirmation_title{
+#confirmation_title {
   font-size: 36px;
 }
 
-#confirmation_subtitle{
+#confirmation_subtitle {
   color: var(--rose_500);
 }
 
-#confirmation_container{
+#confirmation_container {
   background-color: var(--rose_50);
 }
 
-.order_confirmed{
+.order_confirmed {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.dessert_content_wrapper{
+.dessert_content_wrapper {
   display: flex;
 }
 
-.order_confirmed .order_text_wrapper{
+.order_confirmed .order_text_wrapper {
   display: flex;
   flex-direction: column;
 }
 
-.thumbnail{
+.thumbnail {
   margin-right: 8px;
 }
 
-.order_confirmed .total_order_price{
-  font-weight: 700;
-  color: var(--rose_900);
-}
-
-#new_order{
+#new_order {
   margin: auto;
   width: -webkit-fill-available;
 }
 
+@media (max-width: 834px) {
+  #desserts_container {
+    grid-template-columns: repeat(2, 150px);
+  }
+
+  .dessert_img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .order {
+    align-items: center;
+  }
+
+  #total_of_cart {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+
+
+  #major_container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .dessert_img{
+    height: 200px;
+    width: 200px;
+  }
+
+  #desserts_container {
+    grid-template-columns: 200px;
+    gap: 48px;
+  }
+
+  #cart{
+    width: 300px;
+    text-align: center;
+  }
+
+  .order_confirmed{
+    margin-bottom:20px;
+  }
+
+  .order_confirmed .order_text_wrapper{
+    justify-content: center;
+  }
+}
+
+@media (max-width:400px) {
+  .thumbnail{
+    height: 70px;
+  }
+
+  .order_confirmed{
+    align-items: center;
+  }
+}

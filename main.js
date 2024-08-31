@@ -237,13 +237,13 @@ const modifyCartList = (addRemove, dataArr, id) => {
 };
 
 const showTotal = () => {
-  cartQty.innerHTML = `Your Cart`;
-  let totalQty = dessertsInCart.reduce((acc, { qty }) => acc + qty, 0);
-  let cartTotalEl = document.getElementById("total_cart_price");
-  let totalPrice = dessertsInCart.reduce(
+  const totalQty = dessertsInCart.reduce((acc, { qty }) => acc + qty, 0);
+  const cartTotalEl = document.getElementById("total_cart_price");
+  const totalPrice = dessertsInCart.reduce(
     (acc, { qty, price }) => acc + qty * price,
     0
   );
+  cartQty.innerHTML = `Your Cart`;
   if (totalQty > 0) {
     cartQty.innerHTML = `Your Cart (${totalQty})`;
     cartTotalEl.innerHTML = `$${totalPrice.toFixed(2)}`;
@@ -258,8 +258,8 @@ const showConfirmation = () => {
     <p id="confirmation_subtitle"> We hope you enjoy your food! </p>
     <div id="confirmation_container"></div>
   `;
-
-  let container = document.getElementById("confirmation_container");
+  const body = document.querySelector('body');
+  const container = document.getElementById("confirmation_container");
   let cartTotalEl = document.getElementById("total_cart_price");
   let cartTotalPrice = cartTotalEl.innerHTML;
 
@@ -289,11 +289,16 @@ const showConfirmation = () => {
 
   <button id="new_order" class="red_btn" onclick="reset()"> Start a new order </button>
   `;
+
+  body.classList.add('stop_scroll');
   confirmationDialog.showModal();
 };
 
 // Limpa todos os espaços de exibição, exceto a sessão de compra das sobremesas
 const reset = () => {
+  const body = document.querySelector('body');
+
+  body.classList.remove('stop_scroll')
   confirmationDialog.close();
   dessertsInCart = [];
   cartList.innerHTML = "";
@@ -316,3 +321,18 @@ window.onload = () => {
   cartList.classList.add("centralized");
   getDataTo(populateContainer);
 };
+
+
+window.addEventListener('keydown',(e) => {
+  e.preventDefault()
+  if(e.key === 'Escape' && confirmationDialog.open){
+    const body = document.querySelector('body');
+
+    res = confirm('Are you sure you want to close this dialog?');
+
+    if(res === true){
+      body.classList.remove('stop_scroll');
+      confirmationDialog.close();
+    }
+  }
+})

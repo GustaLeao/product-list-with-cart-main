@@ -8,6 +8,7 @@ This is a solution to the [Product list with cart challenge on Frontend Mentor](
 
 Esta é uma solução para o [Desafio de Lista de Produtos com Carrinho no Frontend Mentor](https://www.frontendmentor.io/challenges/product-list-with-cart-5MmqLVAp_d). Usei em grande parte do projeto a linguagem JavaScript para preencher e editar o conteúdo no HTML. Neste projeto, não usei frameworks. Construi tudo com HTML, CSS e JS puros.
 
+[Path to English Version](#english-version)
 ## Versão Em Português
 
 ## Índice

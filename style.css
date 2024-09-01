@@ -93,9 +93,7 @@ body.stop_scroll{
 }
 
 .btn_wrapper:hover {
-  background-color: var(--red);
-  color: var(--rose_50);
-  border-color: var(--rose_50);
+  border-color: var(--red);
   cursor: pointer;
 }
 
@@ -107,12 +105,7 @@ body.stop_scroll{
   gap: 10px;
   background-color: var(--red);
   color: var(--rose_50);
-}
-
-.disabled {
-  inset: unset;
-  all: unset;
-  position: absolute;
+  cursor: auto;
 }
 
 .minus_button {
@@ -122,20 +115,19 @@ body.stop_scroll{
 .plus_button,
 .minus_button {
   all: unset;
-  border-radius: 50%;
-  border: 1px solid var(--rose_50);
-  padding: 0px 3px;
+    border-radius: 50%;
+    border: 1px solid var(--rose_50);
+    padding: 0px 5px;
+    display: flex;
+    align-items: center;
+    height: 20px;
 }
 
 .plus_button:hover,
 .minus_button:hover {
-  background-color: var(--rose_50);
+  z-index:1;
   cursor: pointer;
-}
-.plus_button:hover path,
-.minus_button:hover path {
-  border-color: var(--rose_300);
-  stroke: var(--red);
+  border-width: 2px;
 }
 
 .category {
@@ -302,6 +294,7 @@ body.stop_scroll{
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 24px;
 }
 
 .dessert_content_wrapper {
